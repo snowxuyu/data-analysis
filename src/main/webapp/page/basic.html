@@ -10,51 +10,98 @@
     <script type="text/javascript" src="../js/jquery.easyui.min.js"></script>
 </head>
 <body>
-<table id="dg" class="easyui-datagrid" title="开户信息" style="width:900px;height:500px"
-       data-options="rownumbers:true,singleSelect:false,collapsible:false,striped:true,
+
+<div id="tt" class="easyui-tabs">
+    <div title="开户信息" style="padding:20px;display:none;">
+        <table id="dg" class="easyui-datagrid" title="⊙API渠道用户" style="width:900px;height:400px"
+               data-options="rownumbers:true,singleSelect:false,collapsible:false,striped:true,
                 pagination:true,toolbar:'#tb',
                 url:'/account',method:'get',
 				rowStyler: function(index,row){
 					if (row.authStatus == '失败'){
-						return 'background-color:#FFAEB9;color:#fff;';
+						return 'background-color:#FF8C69;color:#fff;';
 					}
 				}">
-    <thead>
-    <tr>
-        <th data-options="field:'applyTime',width:200">开户时间</th>
-        <th data-options="field:'merchantName',width:100">商户名称</th>
-        <th data-options="field:'accountName',width:100">用户姓名</th>
-        <th data-options="field:'phoneNum',width:150">手机号码</th>
-        <th data-options="field:'authStatus',width:100">认证状态</th>
-        <th data-options="field:'remark',width:190">备注</th>
-    </tr>
-    </thead>
-</table>
+            <thead>
+            <tr>
+                <th data-options="field:'applyTime',width:200">开户时间</th>
+                <th data-options="field:'merchantName',width:100">商户名称</th>
+                <th data-options="field:'accountName',width:100">用户姓名</th>
+                <th data-options="field:'phoneNum',width:150">手机号码</th>
+                <th data-options="field:'authStatus',width:100">认证状态</th>
+                <th data-options="field:'remark',width:190">备注</th>
+            </tr>
+            </thead>
+        </table>
 
-<div id="tb" style="padding:10px 10px;">
-    开始日期: <input id="dateBegin" class="easyui-textbox" style="width:110px">&nbsp
-    结束日期: <input id="dateEnd" class="easyui-textbox" style="width:110px">&nbsp
-    手机号: <input id="phoneNum" class="easyui-textbox" style="width:110px">&nbsp
-    商户名称:
-    <select id="cbx" class="easyui-combobox" panelHeight="auto" style="width:100px">
-        <option value="10000000000">全部</option>
-        <option value="10110000007">海尔</option>
-        <option value="10110000009">奢分期</option>
-    </select>
-    <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查询</a>
+        <div id="tb" style="padding:10px 10px;">
+            开始日期: <input id="dateBegin" class="easyui-textbox" style="width:110px">&nbsp
+            结束日期: <input id="dateEnd" class="easyui-textbox" style="width:110px">&nbsp
+            手机号: <input id="phoneNum" class="easyui-textbox" style="width:110px">&nbsp
+            商户名称:
+            <select id="cbx" class="easyui-combobox" panelHeight="auto" style="width:100px">
+                <option value="20010000007">全部</option>
+                <option value="10110000007">海尔</option>
+                <option value="10110000009">奢分期</option>
+            </select>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查询</a>
+        </div>
+    </div>
+    <div title="用户信息" data-options="closable:true" style="padding:20px;display:none;">
+        用户信息
+    </div>
+    <div title="订单信息" data-options="closable:true" style="overflow:auto;padding:20px;display:none;">
+        <table id="orderTb" class="easyui-datagrid" title="⊙订单查询" style="width:900px;height:400px"
+               data-options="rownumbers:true,singleSelect:false,collapsible:false,striped:true,
+                pagination:true,toolbar:'#tb2',
+                url:'/account',method:'get',
+				rowStyler: function(index,row){
+					if (row.authStatus == '失败'){
+						return 'background-color:#FF8C69;color:#fff;';
+					}
+				}">
+            <thead>
+            <tr>
+                <th data-options="field:'applyTime',width:200">开户时间</th>
+                <th data-options="field:'merchantName',width:100">商户名称</th>
+                <th data-options="field:'accountName',width:100">用户姓名</th>
+                <th data-options="field:'phoneNum',width:150">手机号码</th>
+                <th data-options="field:'authStatus',width:100">认证状态</th>
+                <th data-options="field:'remark',width:190">备注</th>
+            </tr>
+            </thead>
+        </table>
+        <div id="tb2" style="padding:10px 10px;">
+            商户名称:
+            <select id="orderStatusCbx" class="easyui-combobox" panelHeight="auto" style="width:100px">
+                <option value="20010000007">全部</option>
+                <option value="10110000007">海尔</option>
+                <option value="10110000009">奢分期</option>
+            </select>
+            订单状态: <input id="orderStatusId" class="easyui-textbox" style="width:110px">&nbsp
+            订单日期: <input id="orderDateId" class="easyui-textbox" style="width:110px">&nbsp
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="query()">查询</a>
+        </div>
+    </div>
+    <div title="异常订单跟踪" data-options="closable:true" style="padding:20px;display:none;">
+        异常订单跟踪
+    </div>
 </div>
 </body>
-
 <!--datagrid基本设置-->
 <script type="text/javascript">
     $(function () {
+        var opts = $('#dg').datagrid('options');
+        var pageNum = opts.pageNumber;//获取页码
+        var pageSize = opts.pageSize;//获取每页多少记录
+
         var p = $('#dg').datagrid('getPager');
         $(p).pagination({
             pageSize: 10,
             pageList: [5, 10, 15],
             beforePageText: '第',
             afterPageText: '页    共 {pages} 页',
-            displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录',
+            displayMsg: '当前显示 {from} - {to} 条记录   共 {total} 条记录'
         });
     });
 
@@ -65,10 +112,9 @@
         var merchantNo = $('#cbx').combobox('getValue')
 
         var opts = $('#dg').datagrid('options');
-        var page = opts.pageNumber;//获取页码
+        var pageNum = opts.pageNumber;//获取页码
         var pageSize = opts.pageSize;//获取每页多少记录
-        var param = "dateBegin=" + dateBegin + "&dateEnd=" + dateEnd + "&phoneNum=" +
-            phoneNum + "&merchantNo=" + merchantNo + "&page=" + page + "&pageSize=" + pageSize;
+        var param = "dateBegin=" + dateBegin + "&dateEnd=" + dateEnd + "&phoneNum=" + phoneNum + "&merchantNo=" + merchantNo;
         var handler = "/account?" + param;
 
         $('#dg').datagrid('options').url = handler; //设置表格数据的来源URL

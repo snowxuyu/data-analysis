@@ -1,4 +1,4 @@
-package com.personal.study.report;
+package com.personal.study.report.dto;
 
 /**
  * 账户数据

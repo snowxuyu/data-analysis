@@ -1,4 +1,4 @@
-package com.personal.study.report;
+package com.personal.study.report.dto;
 
 import java.util.List;
 
@@ -9,15 +9,15 @@ import java.util.List;
  */
 public class DataGridEntity {
 
-    private int total;
+    private long total;
 
     private List<Object> rows;
 
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(long total) {
         this.total = total;
     }
 

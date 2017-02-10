@@ -1,9 +1,18 @@
 package com.personal.study.report.service;
 
-import com.personal.study.report.AccountInfo;
+import com.personal.study.report.dto.AccountInfo;
+import com.personal.study.report.dto.DataGridEntity;
+import com.personal.study.report.entity.BasicInfo;
+import com.personal.study.report.repository.BasicInfoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,31 +21,39 @@ import java.util.List;
 @Service
 public class AccountService {
 
-    public List getAccountInfo() {
-        AccountInfo aif = new AccountInfo();
-        aif.setApplyTime("2017-02-09 16:30:30");
-        aif.setMerchantName("奢分期");
-        aif.setAccountName("张三");
-        aif.setPhoneNum("15618688888");
-        aif.setAuthStatus("成功");
-        aif.setRemark("授信成功");
+    @Autowired
+    private BasicInfoRepository basicInfoRepository;
 
-        AccountInfo aif1 = new AccountInfo();
-        aif1.setApplyTime("2017-02-09 16:30:30");
-        aif1.setMerchantName("奢分期");
-        aif1.setAccountName("张三");
-        aif1.setPhoneNum("15618687778");
-        aif1.setAuthStatus("失败");
-        aif1.setRemark("身份证被占用");
+    public DataGridEntity getAccountInfo(String dateBegin, String dateEnd, String phoneNum,
+                                         String merchantNo, int page, int rows) {
+        PageRequest request = new PageRequest(page - 1, rows, Sort.Direction.DESC, "createTime");
+        BasicInfo b = new BasicInfo();
+        b.setMerchantsNo(merchantNo);
+        if (phoneNum != null && phoneNum.length() != 0) {
+            b.setPhoneNum(phoneNum);
+        }
+        Example<BasicInfo> basicInfoExample = Example.of(b);
+        Page<BasicInfo> pageInfo = basicInfoRepository.findAll(basicInfoExample, request);
 
+        DataGridEntity dgEntity = new DataGridEntity();
         List list = new ArrayList();
-        list.add(aif);
-        list.add(aif);
-        list.add(aif);
-        list.add(aif1);
-        list.add(aif);
-        list.add(aif);
-        list.add(aif);
-        return list;
+        for (BasicInfo basicInfo : pageInfo.getContent()) {
+            AccountInfo aif = new AccountInfo();
+            aif.setApplyTime(basicInfo.getCreateTime());
+            aif.setMerchantName(basicInfo.getMerchantsNo());
+            aif.setAccountName(basicInfo.getRealName());
+            aif.setPhoneNum(basicInfo.getPhoneNum());
+            int authStatus = basicInfo.getAuthStatus();
+            if (authStatus == 0) {
+                aif.setAuthStatus("失败");
+            } else {
+                aif.setAuthStatus("成功");
+            }
+            aif.setRemark(basicInfo.getRemark());
+            list.add(aif);
+        }
+        dgEntity.setRows(list);
+        dgEntity.setTotal(pageInfo.getTotalElements());
+        return dgEntity;
     }
 }
