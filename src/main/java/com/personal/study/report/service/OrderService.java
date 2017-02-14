@@ -2,10 +2,10 @@ package com.personal.study.report.service;
 
 import com.personal.study.report.dto.DataGrid;
 import com.personal.study.report.dto.OrderDto;
-import com.personal.study.report.entity.OrderInfoEntity;
-import com.personal.study.report.entity.UserInfoEntity;
-import com.personal.study.report.repository.OrderInfoRepository;
-import com.personal.study.report.repository.UserInfoRepository;
+import com.personal.study.report.entity.yh.OrderInfoEntity;
+import com.personal.study.report.entity.yh.UserInfoEntity;
+import com.personal.study.report.repository.yh.OrderInfoRepository;
+import com.personal.study.report.repository.yh.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;

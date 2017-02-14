@@ -2,8 +2,8 @@ package com.personal.study.report.service;
 
 import com.personal.study.report.dto.AccountDto;
 import com.personal.study.report.dto.DataGrid;
-import com.personal.study.report.entity.BasicInfoEntity;
-import com.personal.study.report.repository.BasicInfoRepository;
+import com.personal.study.report.entity.yh.BasicInfoEntity;
+import com.personal.study.report.repository.yh.BasicInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -20,8 +20,7 @@ public class AccountService {
     @Autowired
     private BasicInfoRepository basicInfoRepository;
 
-    public DataGrid getAccountInfo(String dateBegin, String dateEnd, String phoneNum,
-                                   String merchantNo, int page, int rows) {
+    public DataGrid getAccountInfo(String phoneNum, String merchantNo, int page, int rows) {
         PageRequest request = new PageRequest(page - 1, rows, Sort.Direction.DESC, "createTime");
         BasicInfoEntity b = new BasicInfoEntity();
         if (merchantNo != null && !merchantNo.equals("-1")) {
