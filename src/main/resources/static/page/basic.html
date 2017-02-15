@@ -76,7 +76,6 @@
                 <th data-options="field:'periods',width:35">期次</th>
                 <th data-options="field:'orderCenterNo',width:217">订单中心编号</th>
                 <th data-options="field:'status',width:80">订单状态</th>
-
             </tr>
             </thead>
         </table>
@@ -104,8 +103,27 @@
             <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="queryOrder()">查询</a>
         </div>
     </div>
-    <div title="订单跟踪" data-options="closable:true" style="padding:20px;display:none;">
-        异常订单跟踪
+    <div title="信审信息" data-options="closable:true" style="padding:20px;display:none;">
+        <table id="verifyTb" class="easyui-datagrid" title="⊙信审查询" style="width:900px;height:400px"
+               data-options="rownumbers:true,singleSelect:false,collapsible:false,striped:true,
+                pagination:false,toolbar:'#verifyMenu',method:'get'">
+            <thead>
+            <tr>
+                <th data-options="field:'userId',width:80">用户编号</th>
+                <th data-options="field:'borrowNid',width:160">借款单号</th>
+                <th data-options="field:'status',width:80">订单状态</th>
+                <th data-options="field:'amount',width:100">订单金额</th>
+                <th data-options="field:'period',width:70">订单期次</th>
+                <th data-options="field:'addChannel',width:70">用户编号</th>
+                <th data-options="field:'reason',width:150">失败原因</th>
+                <th data-options="field:'remark',width:150">备注</th>
+            </tr>
+            </thead>
+        </table>
+        <div id="verifyMenu" style="padding:10px 10px;">
+            订单编号: <input id="verifyBorrowNid" class="easyui-textbox" style="width:150px">&nbsp
+            <a href="#" class="easyui-linkbutton" iconCls="icon-search" onclick="queryVerify()">查询</a>
+        </div>
     </div>
 </div>
 </body>
@@ -156,7 +174,6 @@
         });
     });
 
-
     function query() {
         var phoneNum = $('#phoneNum').val();
         var merchantNo = $('#cbx').combobox('getValue');
@@ -188,6 +205,16 @@
 
         $('#mobuserTb').datagrid('options').url = handler; //设置表格数据的来源URL
         $('#mobuserTb').datagrid('reload'); //重新加载表格
+    }
+
+    function queryVerify() {
+        var verifyBorrowNid = $('#verifyBorrowNid').val();
+
+        var param = "borrowNid=" + verifyBorrowNid;
+        var handler = "/page/verify?" + param;
+
+        $('#verifyTb').datagrid('options').url = handler; //设置表格数据的来源URL
+        $('#verifyTb').datagrid('reload'); //重新加载表格
     }
 </script>
 </html>

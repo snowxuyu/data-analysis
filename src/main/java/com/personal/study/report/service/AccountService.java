@@ -37,7 +37,7 @@ public class AccountService {
         for (BasicInfoEntity basicInfoEntity : basicInfoPage.getContent()) {
             AccountDto aif = new AccountDto();
             aif.setApplyTime(basicInfoEntity.getCreateTime());
-            aif.setMerchantName(basicInfoEntity.getMerchantsNo());
+            aif.setMerchantName(convertMerchantToName(basicInfoEntity.getMerchantsNo()));
             aif.setAccountName(basicInfoEntity.getRealName());
             aif.setPhoneNum(basicInfoEntity.getPhoneNum());
             int authStatus = basicInfoEntity.getAuthStatus();
@@ -52,5 +52,15 @@ public class AccountService {
         dg.setRows(list);
         dg.setTotal(basicInfoPage.getTotalElements());
         return dg;
+    }
+
+    private String convertMerchantToName(String merchantsNo) {
+        String value = "不知道";
+        if (merchantsNo.equals("20110000003")) {
+            value = "海尔";
+        } else if (merchantsNo.equals("20110000006")) {
+            value = "奢分期";
+        }
+        return value;
     }
 }

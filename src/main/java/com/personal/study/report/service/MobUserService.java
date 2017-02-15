@@ -59,7 +59,7 @@ public class MobUserService {
 
     private String convertAmountType(String type) {
         int typyInt = Integer.parseInt(type);
-        String value = "";
+        String value = "不知道";
         if (typyInt == 1) {
             value = "单期额度";
         } else if (typyInt == 2) {
