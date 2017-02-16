@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div id="tt" class="easyui-tabs">
+<div id="tt" class="easyui-tabs" style="width:950px">
     <div title="开户信息" style="padding:20px;display:none;">
         <table id="dg" class="easyui-datagrid" title="⊙API渠道用户" style="width:900px;height:400px"
                data-options="rownumbers:true,singleSelect:false,collapsible:false,striped:true,
@@ -88,6 +88,8 @@
                 <option value="leilong">雷龙</option>
                 <option value="shefenqi">奢分期</option>
                 <option value="yifenqi">壹分期</option>
+                <option value="shop_aihuishou">爱回收</option>
+                <option value="shop_yueyi">悦易</option>
             </select>
             订单状态:
             <select id="orderStatusCbx" class="easyui-combobox" panelHeight="auto" style="width:100px">
@@ -95,7 +97,7 @@
                 <option value="0">审核中</option>
                 <option value="1">审核成功</option>
                 <option value="2">审核失败</option>
-                <option value="3">放款成功</option>
+                <option value="3" selected="selected">放款成功</option>
                 <option value="4">放款失败</option>
                 <option value="5">还款成功</option>
             </select>

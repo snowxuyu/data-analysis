@@ -33,8 +33,10 @@ public class OrderService {
         if (userId != null && userId.length() != 0) {
             orderInfoEntity.setUserId(userId);
         }
-        if (status != null && status.length() != 0 && !status.equals("-1")) {
+        if (status != null && !status.equals("-1")) {
             orderInfoEntity.setStatus(Integer.parseInt(status));
+        } else {
+            orderInfoEntity.setStatus(3);
         }
         Example<OrderInfoEntity> example = Example.of(orderInfoEntity);
         Page<OrderInfoEntity> orderPages = orderInfoRepository.findAll(example, request);
